@@ -293,13 +293,7 @@ var animatedList = mutableListOf(-1)
                                             timeLeft1=30
                                             timerProgress2=1f
                                             timerProgress1=1f
-                                            if(r1!=r2){
-                                                if(r2>r1){
-                                                    timeLeft2=40
-                                                }else{
-                                                    timeLeft1=40
-                                                }
-                                            }
+                                            if(previousLoser==2) timeLeft2=40 else if(previousLoser==1) timeLeft1=40
                                         }
                                         if(choice==1){
                                             if(r1!=r2){
