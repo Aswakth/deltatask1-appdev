@@ -134,7 +134,6 @@ fun SecondPage(navController: NavController){
                 )
             )
         }
-
         Row(modifier = Modifier.offset(x=62.dp,y=510.dp)) {
             var isExpanded1 by remember {
                 mutableStateOf(false)
@@ -243,7 +242,8 @@ fun SecondPage(navController: NavController){
         ) {
             Button(
                 onClick = {
-                    if(choice==1 || choice==2){navController.navigate("third_page")}
+                    if((choice==1 || choice==2) &&((player1!="") || (player2!=""))){navController.navigate("third_page")}
+                    else if((player1=="") || (player2=="") ) ad=9
                     else{
                         ad=-1
                     }

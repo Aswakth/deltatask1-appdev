@@ -81,9 +81,9 @@ import com.example.colorconquest.ui.theme.ColorConquestTheme
 import kotlinx.coroutines.launch
 import android.content.Context as Context1
 
-var player1 by mutableStateOf("aswakth")
+var player1 by mutableStateOf("")
 
-var player2 by mutableStateOf("balaji")
+var player2 by mutableStateOf("")
 
 var score1 by mutableStateOf(0)
 
@@ -256,7 +256,11 @@ var animatedList = mutableListOf(-1)
                                             }
                             },
                             title = { Text(text = "Help", fontWeight = FontWeight.Bold)},
-                            text={ Text(text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.")}
+                            text={ Text(text = "The game offers two modes: Normal and Timer. In Normal mode, no time limits apply, while in Timer mode, players have 30 seconds to finish the match. Players choose mode, grid size, and matches at the start.\n" +
+                                    "\n" +
+                                    "During the first turn, players assign their color to a tile, gaining 3 points. Subsequent turns involve adding 1 point to tiles of the player's color. When a tile hits 4 points, it spreads to adjacent tiles(up,down,left,right), gaining 1 point each. If a neighboring tile has the opponent's color, it's conquered.\n" +
+                                    "\n" +
+                                    "Objective is to Erase all opponent's tiles. Losers receive power-ups; in Normal mode, an Expansion Power Up allows tiles to expand to 8 points rather than 4 (2 points on each neighbouring tile), which will be available once during the match. In Timer mode, players can gain 10 extra seconds.\n")}
                         )
                     }else if(ad==2){
                         AlertDialog(
@@ -350,7 +354,19 @@ var animatedList = mutableListOf(-1)
                                 }
                             }
                         )
-                    }else if (ad==7){
+                    }else if (ad==9){
+                        AlertDialog(
+                            text =  {Text(text = "Enter Names to play", fontSize = 20.sp)},
+                            containerColor = MaterialTheme.colorScheme.onPrimary,
+                            onDismissRequest = { ad=0 },
+                            confirmButton = {
+                                Button(onClick = { ad =0 }) {
+                                    Text(text = "OK", fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                                }
+                            }
+                        )
+                    }
+                    else if (ad==7){
                         ColorConquestTheme(com.example.colorconquest.theme) {
                             val painter5 = painterResource(id = R.drawable.dialogicon)
                             Box {
@@ -486,6 +502,8 @@ var animatedList = mutableListOf(-1)
                                                     animatedList.clear()
                                                     previousLoser=0
                                                     ad=0
+                                                    player1=""
+                                                    player2=""
                                                 },
                                                 colors = ButtonDefaults.buttonColors(
                                                     containerColor = Color(0xffff5f57)
