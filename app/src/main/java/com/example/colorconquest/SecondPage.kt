@@ -242,11 +242,11 @@ fun SecondPage(navController: NavController){
         ) {
             Button(
                 onClick = {
-                    if((choice==1 || choice==2) &&((player1!="") || (player2!=""))){navController.navigate("third_page")}
-                    else if((player1=="") || (player2=="") ) ad=9
-                    else{
+                    if((choice==1 || choice==2) &&((player1!="") && (player2!=""))){navController.navigate("third_page")}
+                    else if((choice!=1 || choice !=2) && ((player1!="") && (player2!=""))){
                         ad=-1
                     }
+                    else if((player1=="") || (player2=="") ) ad=9
                 },
                 modifier= Modifier
                     .height(77.dp)
