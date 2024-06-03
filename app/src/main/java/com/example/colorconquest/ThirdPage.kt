@@ -6,6 +6,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -53,6 +54,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -62,6 +64,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.colorconquest.ui.theme.ColorConquestTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -75,7 +81,9 @@ fun ThirdPage(navController: NavController){
     ColorConquestTheme(theme) {
         val painter3= painterResource(id = R.drawable.rediconframe)
         val painter4= painterResource(id = R.drawable.blueiconframe)
-
+        val timerfont= Font(R.font.timerfont)
+        val painter8= painterResource(id = R.drawable.stopwatch)
+        val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.lottie))
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -180,7 +188,7 @@ fun ThirdPage(navController: NavController){
             .offset(x = -(18).dp, y = 15.dp), contentAlignment = Alignment.TopEnd) {
             Button(
                 onClick = {
-                    ad=2
+                    ad=11
                 },
                 modifier = Modifier
                     .size(50.dp)
@@ -306,12 +314,17 @@ fun ThirdPage(navController: NavController){
                 }
                 if (!stopTimer){
                     LinearProgressIndicator(progress = barProgress1, color = Color.Green, modifier = Modifier
-                        .height(12.dp)
-                        .rotate(180f))
+                        .height(15.dp)
+                        .rotate(180f)
+                        .offset(y = (15.dp)))
                     Spacer(modifier = Modifier.padding(horizontal = 5.dp))
-                    Text(text = "$timeLeft1", fontSize = 20.sp, fontWeight = FontWeight.Bold,modifier= Modifier
-                        .offset(y = -(7).dp)
+                    Text(text = "$timeLeft1", fontSize = 26.sp, fontFamily = FontFamily(timerfont), fontWeight = FontWeight.Bold,modifier= Modifier
+                        .offset(y = -(21).dp)
                         .rotate(180f), color = MaterialTheme.colorScheme.onPrimary)
+                    Icon(painter = painter8, contentDescription =null, modifier = Modifier
+                        .size(20.dp)
+                        .rotate(180f)
+                        .offset(x = -(8.dp), y = 18.dp))
                 }
             }
             Row(modifier = Modifier.offset(x=10.dp,y=670.dp)){
@@ -425,20 +438,36 @@ fun ThirdPage(navController: NavController){
                     ad=7
                 }
                 if (!stopTimer){
-                    Text(text = "$timeLeft2", fontSize = 20.sp, fontWeight = FontWeight.Bold,modifier=Modifier.offset(x=112.dp,y=-((8.5).dp)), color = MaterialTheme.colorScheme.onPrimary)
+                    Icon(painter = painter8, contentDescription =null, modifier = Modifier
+                        .size(20.dp)
+                        .offset(x = 84.dp, y = 12.dp))
+                    Text(text = "$timeLeft2", fontSize = 26.sp,fontFamily = FontFamily(timerfont), fontWeight = FontWeight.Bold,modifier=Modifier.offset(x=93.dp,y=9.dp), color = MaterialTheme.colorScheme.onPrimary)
                     Spacer(modifier = Modifier.padding(horizontal = 5.dp))
                     LinearProgressIndicator(progress = barProgress2, color = Color.Green, modifier = Modifier
-                        .height(12.dp)
-                        .offset(x = 114.dp))
+                        .height(15.dp)
+                        .offset(x = 95.dp, y = 15.dp))
                 }
             }
         }
         if(ad!=7){
             val fontFamily= FontFamily(Font(R.font.typewriter))
-            Text(text = "GAME ${((selectedSeries.toInt()+1)- series)}", fontSize = 30.sp, fontWeight = FontWeight.Bold, modifier = Modifier.offset(x=152.dp,y=187.dp).alpha(0.8f), fontFamily = fontFamily, color = MaterialTheme.colorScheme.onPrimary)
-            Text(text = "GAME ${((selectedSeries.toInt()+1)- series)}", fontSize = 30.sp, fontWeight = FontWeight.Bold, modifier = Modifier.rotate(180f).offset(x=152.dp,y=189.dp).alpha(0.8f),fontFamily=fontFamily, color = MaterialTheme.colorScheme.onPrimary)
+            Text(text = "GAME ${((selectedSeries.toInt()+1)- series)}", fontSize = 30.sp, fontWeight = FontWeight.Bold, modifier = Modifier
+                .offset(x = 152.dp, y = 187.dp)
+                .alpha(0.8f), fontFamily = fontFamily, color = MaterialTheme.colorScheme.onPrimary)
+            Text(text = "GAME ${((selectedSeries.toInt()+1)- series)}", fontSize = 30.sp, fontWeight = FontWeight.Bold, modifier = Modifier
+                .rotate(180f)
+                .offset(x = 152.dp, y = 189.dp)
+                .alpha(0.8f),fontFamily=fontFamily, color = MaterialTheme.colorScheme.onPrimary)
         }
-
+        if(selectedSeries.toInt()== series && t==1 && !end){
+            if (choice==2){
+                timeLeft1=-1
+                timeLeft2=-1
+                stopTimer=true
+            }
+            end=true
+            ad=10
+        }
         val items=List(grid*grid){it}
         Box(
             modifier = Modifier
@@ -538,7 +567,12 @@ fun ThirdPage(navController: NavController){
                                                     }
                                                 }
                                             }
-
+                                            if (choice==2){
+                                                timeLeft1=-1
+                                                timeLeft2=-1
+                                                stopTimer=true
+                                            }
+                                            ad=10
                                             s=1
                                             score1=0
                                             score2=0
@@ -560,15 +594,8 @@ fun ThirdPage(navController: NavController){
                                             }
                                             r1=l1
                                             r2=l2
-                                            if (choice==2){
-                                                choice=2
-                                                stopTimer=false
-                                                timeLeft2=30
-                                                timeLeft1=30
-                                                timerProgress2=1f
-                                                timerProgress1=1f
-                                                if(previousLoser==1) timeLeft1=40 else if(previousLoser==2) timeLeft2=40
-                                            }
+                                            power1=0
+                                            power2=0
                                             l1=0
                                             l2=0
                                             animatedList.clear()
@@ -641,8 +668,12 @@ fun ThirdPage(navController: NavController){
                                             series-=1
                                             timeLeft1=-1
                                             timeLeft2=-1
+                                            power1=0
+                                            power2=0
                                             stopTimer=true
+                                            end=true
                                             ad=7
+                                            g+=1
                                         }
                                     }
                                 },
@@ -681,6 +712,15 @@ fun ThirdPage(navController: NavController){
                     }
                 }
             )
+        }
+        if(winner== player1.uppercase() && ad==7){
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.TopStart) {
+                LottieAnimation(composition = composition, modifier = Modifier.size(500.dp).offset(x=-(110).dp,y=-(190).dp), iterations = LottieConstants.IterateForever)
+            }
+        }else if(winner== player2.uppercase() && ad==7){
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomEnd) {
+                LottieAnimation(composition = composition, modifier = Modifier.size(500.dp).offset(x=110.dp,y=150.dp), iterations = LottieConstants.IterateForever)
+            }
         }
         if(choice==1){
             if(previousLoser==2){

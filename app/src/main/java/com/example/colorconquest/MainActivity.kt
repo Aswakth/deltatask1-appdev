@@ -7,30 +7,16 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -38,16 +24,10 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -57,17 +37,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -75,15 +48,13 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.colorconquest.datastore.StorePref
 import com.example.colorconquest.datastore.StoreWins
 import com.example.colorconquest.ui.theme.ColorConquestTheme
 import kotlinx.coroutines.launch
-import android.content.Context as Context1
 
-var player1 by mutableStateOf("")
+var player1 by mutableStateOf("ash")
 
-var player2 by mutableStateOf("")
+var player2 by mutableStateOf("bal")
 
 var score1 by mutableStateOf(0)
 
@@ -128,7 +99,10 @@ var highScore by mutableStateOf(0)
 var originalWinnerList = mutableListOf<String>("")
 var wins = mutableListOf<Int>(-1)
 var previousLoser by mutableStateOf(0)
+var g=1
 var animatedList = mutableListOf(-1)
+var t by mutableStateOf(1)
+var end by mutableStateOf(false)
     class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -174,6 +148,8 @@ var animatedList = mutableListOf(-1)
                         selectedGrid
                         previousLoser
                         animatedList
+                        t
+                        end
                     }
                     val context= LocalContext.current
                     val scope= rememberCoroutineScope()
@@ -249,7 +225,7 @@ var animatedList = mutableListOf(-1)
                                                           ad=0
                                                 },
                                                 colors = ButtonDefaults.buttonColors(
-                                                    containerColor = Color(0xff3b4276)
+                                                    containerColor = Color(0xff01c1f0)
                                                 )
                                             ) {
                                                 Text(text = "OK", fontWeight = FontWeight.Bold)
@@ -260,67 +236,14 @@ var animatedList = mutableListOf(-1)
                                     "\n" +
                                     "During the first turn, players assign their color to a tile, gaining 3 points. Subsequent turns involve adding 1 point to tiles of the player's color. When a tile hits 4 points, it spreads to adjacent tiles(up,down,left,right), gaining 1 point each. If a neighboring tile has the opponent's color, it's conquered.\n" +
                                     "\n" +
-                                    "Objective is to Erase all opponent's tiles. Losers receive power-ups; in Normal mode, an Expansion Power Up allows tiles to expand to 8 points rather than 4 (2 points on each neighbouring tile), which will be available once during the match. In Timer mode, players can gain 10 extra seconds.\n")}
-                        )
-                    }else if(ad==2){
-                        AlertDialog(
-                            title={(Text(text = "Are You Sure", fontWeight = FontWeight.Bold))},
-                            text={ Text(text = "Do you want to reset the grid?")},
-                            containerColor = MaterialTheme.colorScheme.onPrimary,
-                            onDismissRequest = { ad=0 },
-                            confirmButton = {
-                                Button(
-                                    onClick = {
-                                        s=1
-                                        score1=0
-                                        score2=0
-                                        selecteditems.clear()
-                                        Player1Boxes.clear()
-                                        Player2Boxes.clear()
-                                        selecteditems.add(-1)
-                                        Player1Boxes.add(-1)
-                                        Player2Boxes.add(-1)
-                                        PlayerTurn=1
-                                        animatedList.clear()
-                                        for(i in 0..((grid*grid)-1)){
-                                            values[i]=0
-                                            Boxes[i]=0
-                                        }
-                                        ad=0
-                                        if (choice==2){
-                                            choice=2
-                                            timeLeft2=30
-                                            timeLeft1=30
-                                            timerProgress2=1f
-                                            timerProgress1=1f
-                                            if(previousLoser==2) timeLeft2=40 else if(previousLoser==1) timeLeft1=40
-                                        }
-                                        if(choice==1){
-                                            if(r1!=r2){
-                                                if(r2>r1){
-                                                    power1=0
-                                                }else{
-                                                    power2=0
-                                                }
-                                            }
-                                        }
-                                        navController.navigate("third_page")
-                                    }
-                                ) {
-                                    Text(text = "OK", fontWeight = FontWeight.Bold)
-                                }
-                            }
+                                    "Objective is to Erase all opponent's tiles. Losers receive power-ups; in Normal mode, an Expansion Power Up allows tiles to expand to 8 points rather than 4 (2 points on each neighbouring tile), which will be available once during the match. In Timer mode, players can gain 10 extra seconds. If a player receives a power up his score wont be considered for the high score.\n")}
                         )
                     }else if(ad==-1){
                         AlertDialog(
-                            text =  {Text(text = "Select a mode to play", fontSize = 20.sp)},
-                            containerColor = MaterialTheme.colorScheme.onPrimary,
+                            text =  {Text(text = "SELECT A MODE TO PLAY", fontSize = 20.sp, textAlign = TextAlign.Center, fontWeight = FontWeight.Bold)},
+                            containerColor = Color(0xff3b4276),
                             onDismissRequest = { ad=0 },
-                            confirmButton = {
-                                Button(onClick = { ad =0 }) {
-                                    Text(text = "OK", fontWeight = FontWeight.Bold, fontSize = 15.sp)
-                                }
-                            }
+                            confirmButton = {},
                         )
                     }else if(ad==6){
                         LaunchedEffect(key1 = null) {
@@ -331,34 +254,183 @@ var animatedList = mutableListOf(-1)
                             }
                         }
                         AlertDialog(
+                            title={(Text(text = "PREVIOUS WINS", fontWeight = FontWeight.Bold))},
                             text = {
                                    Column {
                                        for(i in 0..((originalWinnerList.size)-1)){
                                            if(wins[i]!=-1){
-                                               Text(text = "${originalWinnerList[i]}  -  ${wins[i]}", fontSize = 20.sp)
+                                               if ("${originalWinnerList[i]}  -  ${wins[i]}"=="     "){
+                                                   Text(text = "---")
+                                               } else {
+                                                   Text(text = "${originalWinnerList[i]}  -  ${wins[i]}", fontSize = 20.sp)
+                                               }
                                            }
                                        }
                                    }
                             },
                             containerColor = MaterialTheme.colorScheme.onPrimary,
                             onDismissRequest = { ad=0 },
-                            confirmButton = {
-                                Button(onClick = { ad =0 }) {
-                                    Text(text = "OK", fontWeight = FontWeight.Bold, fontSize = 15.sp)
-                                }
-                            }
+                            confirmButton = {}
                         )
                     }else if (ad==9){
                         AlertDialog(
-                            text =  {Text(text = "Enter Names to play", fontSize = 20.sp)},
-                            containerColor = MaterialTheme.colorScheme.onPrimary,
+                            text =  {Text(text = "ENTER NAMES TO PLAY", fontSize = 20.sp, textAlign = TextAlign.Center, fontWeight = FontWeight.Bold)},
+                            containerColor = Color(0xff3b4276),
                             onDismissRequest = { ad=0 },
-                            confirmButton = {
-                                Button(onClick = { ad =0 }) {
-                                    Text(text = "OK", fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                            confirmButton = {}
+                        )
+                    }else if (ad==10){
+                        val game=((selectedSeries.toInt())+1)- series
+                        AlertDialog(
+                            onDismissRequest =
+                            {
+                                t+=1
+                                ad=0
+                                if (choice==2){
+                                    choice=2
+                                    stopTimer=false
+                                    timeLeft2=30
+                                    timeLeft1=30
+                                    timerProgress2=1f
+                                    timerProgress1=1f
+                                    if(previousLoser==1) timeLeft1=40 else if(previousLoser==2) timeLeft2=40
                                 }
+                            },
+                            confirmButton = {},
+                            title = {Text(text = "GAME ${game}")},
+                            text = {
+                                if (game!=1 && choice==1) Text(text = "POWER UP will be available for the loser, enabling them to expand their tile into 8 points once")
+                                else if (game!=1 &&choice==2) Text(text = "Extra 10 seconds will be added to the loser's timer as a POWER UP")
                             }
                         )
+                    }else if(ad==11){
+                        val reset= painterResource(id = R.drawable.reset)
+                        val home= painterResource(id = R.drawable.home)
+                        val play= painterResource(id = R.drawable.play)
+                        AlertDialog(
+                            onDismissRequest = { ad=0 },
+                            modifier = Modifier.offset(x=30.dp)
+                        ) {
+                            Box(contentAlignment = Alignment.TopEnd, modifier = Modifier.fillMaxSize()) {
+                                Card(
+                                    shape = CircleShape, modifier = Modifier
+                                        .size(250.dp)
+                                        .padding(20.dp)
+                                        .alpha(0.7f),
+                                    colors = CardDefaults.cardColors(containerColor = Color.White),
+                                ) {
+                                    Box(modifier = Modifier.offset(x=72.dp, y = 12.dp)){
+                                        Button(
+                                            onClick = {
+                                                s=1
+                                                score1=0
+                                                score2=0
+                                                selecteditems.clear()
+                                                Player1Boxes.clear()
+                                                Player2Boxes.clear()
+                                                selecteditems.add(-1)
+                                                Player1Boxes.add(-1)
+                                                Player2Boxes.add(-1)
+                                                PlayerTurn=1
+                                                animatedList.clear()
+                                                for(i in 0..((grid*grid)-1)){
+                                                    values[i]=0
+                                                    Boxes[i]=0
+                                                }
+                                                ad=0
+                                                if (choice==2){
+                                                    choice=2
+                                                    timeLeft2=30
+                                                    timeLeft1=30
+                                                    timerProgress2=1f
+                                                    timerProgress1=1f
+                                                    if(previousLoser==2) timeLeft2=40 else if(previousLoser==1) timeLeft1=40
+                                                }
+                                                if(choice==1){
+                                                    if (previousLoser==1)power2=0 else if(previousLoser==2) power1=0
+                                                }
+                                                ad=0
+                                            },
+                                            shape = CircleShape,
+                                            modifier = Modifier.size(66.dp),
+                                            colors = ButtonDefaults.buttonColors(
+                                                containerColor = Color.Red
+                                            )
+                                        ) {
+                                        }
+                                        Image(painter = reset, contentDescription = null, modifier = Modifier.size(40.dp).offset(x=14.dp,y=13.dp))
+                                    }
+                                    Box(modifier = Modifier.offset(x=20.dp,y=35.dp)){
+                                        Button(
+                                            onClick = { ad=0 },
+                                            shape = CircleShape,
+                                            modifier = Modifier.size(66.dp),
+                                            colors = ButtonDefaults.buttonColors(
+                                                containerColor = Color.Cyan
+                                            )
+                                        ) {
+                                        }
+                                        Image(painter = play, contentDescription = null, modifier = Modifier.size(35.dp).offset(x=18.dp,y=15.dp))
+                                    }
+                                    Box(modifier = Modifier.offset(x=125.dp,y=-(32).dp)){
+                                        Button(
+                                            onClick = {
+                                                choice = 0
+                                                stopTimer = false
+                                                timeLeft2 = 30
+                                                timeLeft1 = 30
+                                                timerProgress2 = 1f
+                                                timerProgress1 = 1f
+                                                ad=0
+                                                navController.navigate("main_page")
+                                                s = 1
+                                                score1 = 0
+                                                score2 = 0
+                                                selecteditems.clear()
+                                                Player1Boxes.clear()
+                                                Player2Boxes.clear()
+                                                selecteditems.add(-1)
+                                                Player1Boxes.add(-1)
+                                                Player2Boxes.add(-1)
+                                                PlayerTurn = 1
+                                                for (i in 0..((grid * grid) - 1)) {
+                                                    values[i] = 0
+                                                    Boxes[i] = 0
+                                                }
+                                                series = selectedSeries.toInt()
+                                                count2 = 0
+                                                count1 = 0
+                                                winnerList.clear()
+                                                l1 = 0
+                                                l2 = 0
+                                                losersList.clear()
+                                                r1 = 0
+                                                r2 = 0
+                                                series = 3
+                                                grid = 5
+                                                selectedSeries = list2[1]
+                                                selectedGrid = list1[2]
+                                                power1 = 0
+                                                power2 = 0
+                                                animatedList.clear()
+                                                previousLoser=0
+                                                ad=0
+                                                player1=""
+                                                player2=""
+                                                t=1
+                                            },
+                                            shape = CircleShape,
+                                            modifier = Modifier.size(66.dp),
+                                            colors = ButtonDefaults.buttonColors(
+                                                containerColor = Color.Yellow
+                                            )
+                                        ) {
+                                        }
+                                        Image(painter = home, contentDescription = null, modifier = Modifier.size(40.dp).offset(x=13.dp,y=11.dp))
+                                    }
+                                }
+                            }
+                        }
                     }
                     else if (ad==7){
                         ColorConquestTheme(com.example.colorconquest.theme) {
@@ -436,9 +508,11 @@ var animatedList = mutableListOf(-1)
                                                     winnerList.clear()
                                                     r1 = 0
                                                     r2 = 0
+                                                    t=1
                                                     power1 = 0
                                                     power2 = 0
                                                     previousLoser=0
+                                                    end=false
                                                     navController.navigate("third_page")
                                                 },
                                                 colors = ButtonDefaults.buttonColors(
@@ -498,6 +572,7 @@ var animatedList = mutableListOf(-1)
                                                     ad=0
                                                     player1=""
                                                     player2=""
+                                                    t=1
                                                 },
                                                 colors = ButtonDefaults.buttonColors(
                                                     containerColor = Color(0xffff5f57)

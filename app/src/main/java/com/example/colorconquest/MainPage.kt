@@ -1,10 +1,7 @@
 package com.example.colorconquest
 
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -16,27 +13,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.CutCornerShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -50,17 +40,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.colorconquest.datastore.StorePref
+import com.example.colorconquest.datastore.HighScore
 import com.example.colorconquest.ui.theme.ColorConquestTheme
-import kotlinx.coroutines.launch
 
 @Composable
 fun MainPage(navController: NavController){
-
+    val painter6= painterResource(id = R.drawable.winner)
+    val painter7= painterResource(id = R.drawable.glass)
     val context= LocalContext.current
-    val scope= rememberCoroutineScope()
-    val dataStore= StorePref(context)
-    val savedScore=dataStore.getScore.collectAsState(initial = "")
+    val preferencesManager = remember { HighScore(context) }
+    val data = remember { mutableStateOf(preferencesManager.getData("myKey", "")) }
     ColorConquestTheme(theme) {
         val fontFamily= FontFamily(
             Font(R.font.leckerlione_regular, FontWeight.Bold)
@@ -107,38 +96,61 @@ fun MainPage(navController: NavController){
             )
         }
         Box(contentAlignment = Alignment.TopEnd) {
-            Switch(checked = theme, onCheckedChange = {theme=!theme}, colors = SwitchDefaults.colors(
-                uncheckedThumbColor = Color.LightGray,
-                uncheckedTrackColor = Color.White,
-                checkedThumbColor = Color.Black,
-                checkedTrackColor = Color.DarkGray,
-            ), modifier = Modifier.padding(20.dp)
-            )
-        }
-        Box(contentAlignment = Alignment.BottomCenter, modifier = Modifier.offset(y=-(450.dp))){
-            Button(
-                onClick = { ad=6 },modifier=Modifier
-                    .shadow(8.dp, RoundedCornerShape(100.dp)),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xffffd5b7)
+            Column {
+                Switch(checked = theme, onCheckedChange = {theme=!theme}, colors = SwitchDefaults.colors(
+                    uncheckedThumbColor = Color.LightGray,
+                    uncheckedTrackColor = Color.White,
+                    checkedThumbColor = Color.Black,
+                    checkedTrackColor = Color.DarkGray,
+                ), modifier = Modifier.padding(20.dp)
                 )
-            ) {
-                Text(text = "Previous Wins", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onPrimary, modifier = Modifier.alpha(0.8f))
             }
+        }
+        Box(contentAlignment = Alignment.TopStart, modifier = Modifier.padding(20.dp)){
+            Button(
+                onClick = { ad=6 },
+                shape = CircleShape,
+                modifier= Modifier
+                    .shadow(8.dp, CircleShape)
+                    .size(75.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xff2A0547)
+                ),
+                elevation = ButtonDefaults.buttonElevation(
+                    defaultElevation = 4.dp
+                )
+            ) {}
+            Image(painter = painter6, contentDescription = null,modifier= Modifier
+                .size(60.dp)
+                .offset(x = 8.dp, y = 9.dp))
+        }
+        val highscore = remember { "$cwinner        $highScore                $fastTime" }
+        if (fastTime != -1) {
+            preferencesManager.saveData("myKey", highscore)
+            data.value = highscore
         }
 
-        LaunchedEffect(key1 = null) {
-            scope.launch {
-                dataStore.saveScore("$cwinner        $highScore                $fastTime")
-            }
+        val savedHighScore = if (fastTime != -1) {
+            preferencesManager.getData("myKey", highscore)
+        } else {
+            ""
         }
         Box(modifier = Modifier.alpha(0.7f)){
             if (fastTime!==(-1)){
+                Card(
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color(255, 194, 113, 255)
+                    ),
+                    modifier = Modifier
+                        .size(width = 373.dp, height = 75.dp)
+                        .offset(x = 15.dp, y = 587.dp)
+                        .alpha(0.6f)
+                ){}
                 Column(modifier = Modifier
                     .fillMaxSize()
                     .offset(y = 600.dp), horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(text = "NAME   HIGH SCORE   FASTEST TIME", fontWeight = FontWeight.Bold, fontSize = 15.sp, color = Color.Black)
-                    Text(text = "${savedScore.value}", fontSize = 20.sp, modifier = Modifier.offset(x=-(29).dp), color = Color.Black)
+                    Text(text = savedHighScore, fontSize = 20.sp, modifier = Modifier.offset(x=-(29).dp), color = Color.Black)
                 }
             }
         }

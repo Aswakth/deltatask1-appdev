@@ -51,6 +51,8 @@ android {
 
 dependencies {
 
+    implementation ("com.airbnb.android:lottie-compose:6.0.0")
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -67,6 +69,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation("androidx.datastore:datastore-preferences:1.1.1")
+    implementation ("androidx.datastore:datastore-preferences:1.0.0")
 
     val nav_version = "2.7.7"
     implementation("androidx.navigation:navigation-compose:$nav_version")
