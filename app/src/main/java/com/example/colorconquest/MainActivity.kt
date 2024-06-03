@@ -52,9 +52,9 @@ import com.example.colorconquest.datastore.StoreWins
 import com.example.colorconquest.ui.theme.ColorConquestTheme
 import kotlinx.coroutines.launch
 
-var player1 by mutableStateOf("ash")
+var player1 by mutableStateOf("")
 
-var player2 by mutableStateOf("bal")
+var player2 by mutableStateOf("")
 
 var score1 by mutableStateOf(0)
 
