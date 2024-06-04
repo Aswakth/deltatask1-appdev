@@ -59,13 +59,13 @@ fun Expansion(index: Int){
                     Player2Boxes.remove(index+grid)
                     Player1Boxes.add(index+grid)
                 }
-                if(values[index-grid]==4){
+                if(values[index-grid]==4 || values[index-grid]==5){
                     Expansion(index-grid)
                 }
-                if(values[index+1]==4){
+                if(values[index+1]==4 || values[index+1]==5){
                     Expansion(index+1)
                 }
-                if(values[index+grid]==4){
+                if(values[index+grid]==4 || values[index+grid]==5){
                     Expansion(index+grid)
                 }
             }
@@ -111,13 +111,13 @@ fun Expansion(index: Int){
                     Player2Boxes.remove(index+grid)
                     Player1Boxes.add(index+grid)
                 }
-                if(values[index-grid]==4){
+                if(values[index-grid]==4 || values[index-grid]==5){
                     Expansion(index-grid)
                 }
-                if(values[index-1]==4){
+                if(values[index-1]==4 || values[index-1]==5){
                     Expansion(index-1)
                 }
-                if(values[index+grid]==4){
+                if(values[index+grid]==4 || values[index+grid]==5){
                     Expansion(index+grid)
                 }
             }
@@ -163,13 +163,13 @@ fun Expansion(index: Int){
                     Player2Boxes.remove(index+grid)
                     Player1Boxes.add(index+grid)
                 }
-                if(values[index-1]==4){
+                if(values[index-1]==4 || values[index-1]==5){
                     Expansion(index-1)
                 }
-                if(values[index+1]==4){
+                if(values[index+1]==4 || values[index+1]==5){
                     Expansion(index+1)
                 }
-                if(values[index+grid]==4){
+                if(values[index+grid]==4 || values[index+grid]==5){
                     Expansion(index+grid)
                 }
             }
@@ -215,13 +215,13 @@ fun Expansion(index: Int){
                     Player2Boxes.remove(index-1)
                     Player1Boxes.add(index-1)
                 }
-                if(values[index-grid]==4){
+                if(values[index-grid]==4 || values[index-grid]==5){
                     Expansion(index-grid)
                 }
-                if(values[index+1]==4){
+                if(values[index+1]==4 || values[index+1]==5){
                     Expansion(index+1)
                 }
-                if(values[index-1]==4){
+                if(values[index-1]==4 || values[index-1]==5){
                     Expansion(index-1)
                 }
             }
@@ -256,10 +256,10 @@ fun Expansion(index: Int){
                     Player2Boxes.remove(index+grid)
                     Player1Boxes.add(index+grid)
                 }
-                if(values[index+1]==4){
+                if(values[index+1]==4 || values[index+1]==5){
                     Expansion(index+1)
                 }
-                if(values[index+grid]==4){
+                if(values[index+grid]==4 || values[index+grid]==5){
                     Expansion(index+grid)
                 }
             }
@@ -294,10 +294,10 @@ fun Expansion(index: Int){
                     Player2Boxes.remove(index+1)
                     Player1Boxes.add(index+1)
                 }
-                if(values[index-grid]==4){
+                if(values[index-grid]==4 || values[index-grid]==5){
                     Expansion(index-grid)
                 }
-                if(values[index+1]==4){
+                if(values[index+1]==4 || values[index+1]==5){
                     Expansion(index+1)
                 }
             }
@@ -332,10 +332,10 @@ fun Expansion(index: Int){
                     Player2Boxes.remove(index+grid)
                     Player1Boxes.add(index+grid)
                 }
-                if(values[index-1]==4){
+                if(values[index-1]==4 || values[index-1]==5){
                     Expansion(index-1)
                 }
-                if(values[index+grid]==4){
+                if(values[index+grid]==4 || values[index+grid]==5){
                     Expansion(index+grid)
                 }
             }
@@ -370,10 +370,10 @@ fun Expansion(index: Int){
                     Player2Boxes.remove(index-1)
                     Player1Boxes.add(index-1)
                 }
-                if(values[index-grid]==4){
+                if(values[index-grid]==4 || values[index-grid]==5){
                     Expansion(index-grid)
                 }
-                if(values[index-1]==4){
+                if(values[index-1]==4 || values[index-1]==5){
                     Expansion(index-1)
                 }
             }
@@ -430,16 +430,16 @@ fun Expansion(index: Int){
                     Player2Boxes.remove(index-1)
                     Player1Boxes.add(index-1)
                 }
-                if(values[index-grid]==4){
+                if(values[index-grid]==4 || values[index-grid]==5){
                     Expansion(index-grid)
                 }
-                if(values[index+1]==4){
+                if(values[index+1]==4 || values[index+1]==5){
                     Expansion(index+1)
                 }
-                if(values[index+grid]==4){
+                if(values[index+grid]==4 || values[index+grid]==5){
                     Expansion(index+grid)
                 }
-                if(values[index-1]==4){
+                if(values[index-1]==4 || values[index-1]==5){
                     Expansion(index-1)
                 }
             }
@@ -487,13 +487,13 @@ fun Expansion(index: Int){
                     Player1Boxes.remove(index + grid)
                     Player2Boxes.add(index + grid)
                 }
-                if (values[index - grid] == 4) {
+                if (values[index - grid] == 4 || values[index - grid] == 5) {
                     Expansion(index - grid)
                 }
-                if (values[index + 1]== 4) {
+                if (values[index + 1]== 4 || values[index + 1]== 5) {
                     Expansion(index + 1)
                 }
-                if (values[index + grid]== 4) {
+                if (values[index + grid]== 4 || values[index + grid]== 5) {
                     Expansion(index + grid)
                 }
             }
@@ -539,13 +539,13 @@ fun Expansion(index: Int){
                     Player1Boxes.remove(index + grid)
                     Player2Boxes.add(index + grid)
                 }
-                if (values[index - grid]== 4) {
+                if (values[index - grid]== 4 || values[index - grid]== 5) {
                     Expansion(index - grid)
                 }
-                if (values[index - 1] == 4) {
+                if (values[index - 1] == 4 || values[index - 1] == 5) {
                     Expansion(index - 1)
                 }
-                if (values[index + grid] == 4) {
+                if (values[index + grid] == 4 || values[index + grid] == 5) {
                     Expansion(index + grid)
                 }
             }
@@ -591,13 +591,13 @@ fun Expansion(index: Int){
                     Player1Boxes.remove(index + grid)
                     Player2Boxes.add(index + grid)
                 }
-                if (values[index - 1] == 4) {
+                if (values[index - 1] == 4 || values[index - 1] == 5) {
                     Expansion(index - 1)
                 }
-                if (values[index + 1] == 4) {
+                if (values[index + 1] == 4 || values[index + 1] == 5) {
                     Expansion(index + 1)
                 }
-                if (values[index + grid] == 4) {
+                if (values[index + grid] == 4 || values[index + grid] == 5) {
                     Expansion(index + grid)
                 }
             }
@@ -643,13 +643,13 @@ fun Expansion(index: Int){
                     Player1Boxes.remove(index-1)
                     Player2Boxes.add(index-1)
                 }
-                if (values[index - grid] == 4) {
+                if (values[index - grid] == 4 || values[index - grid] == 5) {
                     Expansion(index - grid)
                 }
-                if (values[index + 1] == 4) {
+                if (values[index + 1] == 4 || values[index + 1] == 5) {
                     Expansion(index + 1)
                 }
-                if (values[index -1] == 4) {
+                if (values[index -1] == 4 || values[index -1] == 5) {
                     Expansion(index-1)
                 }
             }
@@ -684,10 +684,10 @@ fun Expansion(index: Int){
                     Player1Boxes.remove(index + grid)
                     Player2Boxes.add(index + grid)
                 }
-                if (values[index + 1] == 4) {
+                if (values[index + 1] == 4 || values[index + 1] == 5) {
                     Expansion(index + 1)
                 }
-                if (values[index + grid] == 4) {
+                if (values[index + grid] == 4 || values[index + grid] == 5) {
                     Expansion(index + grid)
                 }
             }
@@ -722,10 +722,10 @@ fun Expansion(index: Int){
                     Player1Boxes.remove(index + 1)
                     Player2Boxes.add(index + 1)
                 }
-                if (values[index - grid] == 4) {
+                if (values[index - grid] == 4 || values[index - grid] == 5) {
                     Expansion(index - grid)
                 }
-                if (values[index + 1] == 4) {
+                if (values[index + 1] == 4 || values[index + 1] == 5) {
                     Expansion(index + 1)
                 }
             }
@@ -760,10 +760,10 @@ fun Expansion(index: Int){
                     Player1Boxes.remove(index + grid)
                     Player2Boxes.add(index + grid)
                 }
-                if (values[index - 1] == 4) {
+                if (values[index - 1] == 4 || values[index - 1] == 5) {
                     Expansion(index - 1)
                 }
-                if (values[index + grid] == 4) {
+                if (values[index + grid] == 4 ||values[index + grid] == 5) {
                     Expansion(index + grid)
                 }
             }
@@ -798,10 +798,10 @@ fun Expansion(index: Int){
                     Player1Boxes.remove(index - 1)
                     Player2Boxes.add(index - 1)
                 }
-                if (values[index - grid] == 4) {
+                if (values[index - grid] == 4 || values[index - grid] == 5) {
                     Expansion(index - grid)
                 }
-                if (values[index - 1] == 4) {
+                if (values[index - 1] == 4 || values[index - 1] == 5) {
                     Expansion(index - 1)
                 }
             }
@@ -858,16 +858,16 @@ fun Expansion(index: Int){
                     Player1Boxes.remove(index - 1)
                     Player2Boxes.add(index - 1)
                 }
-                if (values[index - grid] == 4) {
+                if (values[index - grid] == 4 || values[index - grid] == 5) {
                     Expansion(index - grid)
                 }
-                if (values[index + 1] == 4) {
+                if (values[index + 1] == 4 || values[index + 1] == 5) {
                     Expansion(index + 1)
                 }
-                if (values[index + grid] == 4) {
+                if (values[index + grid] == 4 || values[index + grid] == 5) {
                     Expansion(index + grid)
                 }
-                if (values[index - 1] == 4) {
+                if (values[index - 1] == 4 || values[index - 1] == 5) {
                     Expansion(index - 1)
                 }
             }
